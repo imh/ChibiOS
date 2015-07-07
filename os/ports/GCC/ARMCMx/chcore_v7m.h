@@ -491,7 +491,10 @@ struct context {
  * @details The default action is to panic.
  */
 #if !defined(STACK_OVERFLOW_PANIC_HOOK) || defined(__DOXYGEN__)
-#define STACK_OVERFLOW_PANIC_HOOK(otp)   chDbgPanic(chRegGetThreadName(otp));
+#include <stdio.h>
+#define STACK_OVERFLOW_PANIC_HOOK(otp) \
+  printf("stack overflow"); \
+  chDbgPanic(chRegGetThreadName(otp));
 #endif
 
 
