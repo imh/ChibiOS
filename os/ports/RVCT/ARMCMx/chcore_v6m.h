@@ -347,6 +347,15 @@ struct context {
 #endif
 
 /**
+ * @brief   Stack overflow error hook.
+ * @details The default action is to panic.
+ */
+#if !defined(STACK_OVERFLOW_PANIC_HOOK) || defined(__DOXYGEN__)
+#define STACK_OVERFLOW_PANIC_HOOK(otp)   chDbgPanic(chRegGetThreadName(otp))
+#endif
+
+
+/**
  * @brief   Performs a context switch between two threads.
  * @details This is the most critical code in any port, this function
  *          is responsible for the context switch between 2 threads.
@@ -362,7 +371,7 @@ struct context {
 #define port_switch(ntp, otp) {                                             \
   uint8_t *r13 = (uint8_t *)__current_sp();                                 \
   if ((stkalign_t *)(r13 - sizeof(struct intctx)) < otp->p_stklimit)        \
-    chDbgPanic("stack overflow");                                           \
+    STACK_OVERFLOW_PANIC_HOOK(otp);                                         \
   _port_switch(ntp, otp);                                                   \
 }
 #endif
