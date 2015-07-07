@@ -493,8 +493,10 @@ struct context {
 #if !defined(STACK_OVERFLOW_PANIC_HOOK) || defined(__DOXYGEN__)
 #include <stdio.h>
 #define STACK_OVERFLOW_PANIC_HOOK(otp) \
+ { \
   printf("stack overflow"); \
-  chDbgPanic(chRegGetThreadName(otp));
+  chDbgPanic(chRegGetThreadName(otp)); \
+ }
 #endif
 
 
